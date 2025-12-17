@@ -9,7 +9,6 @@ import CaseStudies from './components/CaseStudies';
 import ContactForm from './components/ContactForm';
 import Footer from './components/Footer';
 import StickyCTA from './components/StickyCTA';
-import AIVisualizer from './components/AIVisualizer';
 import { Page } from './types';
 import { NavigationContext } from './NavigationContext';
 import { Database, Lightbulb, ArrowLeft, Target, Bot, Coins, Landmark } from 'lucide-react';
@@ -44,7 +43,7 @@ const HomePage = () => (
   </div>
 );
 
-const SubPageHeader = ({ title, subtitle, icon: Icon, color, prompt }: { title: string, subtitle: string, icon: any, color: string, prompt?: string }) => {
+const SubPageHeader = ({ title, subtitle, icon: Icon, color, image }: { title: string, subtitle: string, icon: any, color: string, image?: string }) => {
   const { navigateTo } = React.useContext(NavigationContext);
   return (
     <div className="pt-40 pb-20 bg-brand-dark relative overflow-hidden">
@@ -69,7 +68,12 @@ const SubPageHeader = ({ title, subtitle, icon: Icon, color, prompt }: { title: 
             <p className="text-xl md:text-2xl text-gray-400 font-light leading-relaxed border-l-2 border-brand-electricBlue/20 pl-8 mb-12">{subtitle}</p>
           </div>
           
-          {prompt && <AIVisualizer prompt={prompt} />}
+          {image && (
+            <div className="relative h-[300px] lg:h-[400px] w-full overflow-hidden border border-white/5 shadow-2xl animate-fade-in group">
+              <img src={image} alt={title} className="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-700" />
+              <div className="absolute inset-0 bg-gradient-to-t from-brand-dark via-transparent to-transparent"></div>
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -87,17 +91,17 @@ const App = () => {
   const renderPage = () => {
     switch (currentPage) {
       case Page.BLOCKCHAIN:
-        return <SubPageHeader title="BLOCKCHAIN LABS" subtitle="Architecting modular Layer 1 & 2 protocols for the global enterprise economy." icon={Database} color="text-brand-electricBlue" prompt="high-throughput modular blockchain architecture with glowing data nodes" />;
+        return <SubPageHeader title="BLOCKCHAIN LABS" subtitle="Architecting modular Layer 1 & 2 protocols for the global enterprise economy." icon={Database} color="text-brand-electricBlue" image="https://images.unsplash.com/photo-1639322537228-f710d846310a?q=80&w=2832&auto=format&fit=crop" />;
       case Page.AI:
-        return <SubPageHeader title="AI & MACHINE LEARNING" subtitle="Integrating sophisticated LLMs and autonomous agents into business logic." icon={Bot} color="text-brand-emerald" prompt="cybernetic neural network core with holographic AI interface" />;
+        return <SubPageHeader title="AI & MACHINE LEARNING" subtitle="Integrating sophisticated LLMs and autonomous agents into business logic." icon={Bot} color="text-brand-emerald" image="https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=2832&auto=format&fit=crop" />;
       case Page.GAMING:
-        return <SubPageHeader title="GAMING & METAVERSE" subtitle="Crafting high-fidelity virtual realities with sustainable play-to-earn mechanics." icon={Target} color="text-purple-500" prompt="immersive unreal engine 5 metaverse city with neon lights" />;
+        return <SubPageHeader title="GAMING & METAVERSE" subtitle="Crafting high-fidelity virtual realities with sustainable play-to-earn mechanics." icon={Target} color="text-purple-500" image="https://images.unsplash.com/photo-1614850523296-d8c1af93d400?q=80&w=2832&auto=format&fit=crop" />;
       case Page.SOLUTIONS:
-        return <SubPageHeader title="WEB3 SOLUTIONS" subtitle="Institutional-grade digital asset infrastructure and secure custodial solutions." icon={Coins} color="text-brand-gold" prompt="golden cryptocurrency coins flowing through high-tech hardware wallet interface" />;
+        return <SubPageHeader title="WEB3 SOLUTIONS" subtitle="Institutional-grade digital asset infrastructure and secure custodial solutions." icon={Coins} color="text-brand-gold" image="https://images.unsplash.com/photo-1621416894569-0f39ed31d247?q=80&w=2832&auto=format&fit=crop" />;
       case Page.INDUSTRIES:
-        return <SubPageHeader title="INDUSTRY SECTORS" subtitle="Bridging traditional enterprise with decentralized infrastructure for government, BFSI, and cloud." icon={Landmark} color="text-brand-electricBlue" prompt="futuristic city landscape with digital skyscraper interfaces" />;
+        return <SubPageHeader title="INDUSTRY SECTORS" subtitle="Bridging traditional enterprise with decentralized infrastructure for government, BFSI, and cloud." icon={Landmark} color="text-brand-electricBlue" image="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2832&auto=format&fit=crop" />;
       case Page.ABOUT:
-        return <SubPageHeader title="ABOUT THE FIRM" subtitle="A collective of veteran engineers and strategists building the future of Web3." icon={Lightbulb} color="text-brand-emerald" prompt="futuristic office lounge with minimalist tech aesthetics" />;
+        return <SubPageHeader title="ABOUT THE FIRM" subtitle="A collective of veteran engineers and strategists building the future of Web3." icon={Lightbulb} color="text-brand-emerald" image="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2832&auto=format&fit=crop" />;
       case Page.CONTACT:
         return (
           <div className="min-h-screen animate-fade-in bg-brand-dark pt-32 pb-20">
