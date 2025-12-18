@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Metrics from './components/Metrics';
@@ -9,6 +9,8 @@ import CaseStudies from './components/CaseStudies';
 import ContactForm from './components/ContactForm';
 import Footer from './components/Footer';
 import StickyCTA from './components/StickyCTA';
+import GlobalLoader from './components/GlobalLoader';
+import UserOnboarding from './components/UserOnboarding';
 import { Page } from './types';
 import { NavigationContext } from './NavigationContext';
 import { Database, Lightbulb, ArrowLeft, Target, Bot, Coins, Landmark } from 'lucide-react';
@@ -82,10 +84,33 @@ const SubPageHeader = ({ title, subtitle, icon: Icon, color, image }: { title: s
 
 const App = () => {
   const [currentPage, setCurrentPage] = useState<Page>(Page.HOME);
+  const [isAppLoading, setIsAppLoading] = useState(true);
+  const [showOnboarding, setShowOnboarding] = useState(false);
+  const [currentUser, setCurrentUser] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Initial App Load Simulation
+    const timer = setTimeout(() => {
+      setIsAppLoading(false);
+      // Automatically prompt onboarding if not identified
+      if (!currentUser) {
+        setTimeout(() => setShowOnboarding(true), 500);
+      }
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, []);
 
   const navigateTo = (page: Page) => {
+    // Page Transition Simulation
+    setIsAppLoading(true);
     setCurrentPage(page);
     window.scrollTo(0, 0);
+    setTimeout(() => setIsAppLoading(false), 800);
+  };
+
+  const handleOnboardingSuccess = (email: string) => {
+    setCurrentUser(email);
+    setShowOnboarding(false);
   };
 
   const renderPage = () => {
@@ -124,7 +149,16 @@ const App = () => {
 
   return (
     <NavigationContext.Provider value={{ currentPage, navigateTo }}>
-      <div className="min-h-screen bg-brand-dark text-white selection:bg-brand-electricBlue selection:text-brand-dark">
+      {isAppLoading && <GlobalLoader />}
+      
+      {showOnboarding && (
+        <UserOnboarding 
+          onClose={() => setShowOnboarding(false)} 
+          onSuccess={handleOnboardingSuccess} 
+        />
+      )}
+
+      <div className={`min-h-screen bg-brand-dark text-white selection:bg-brand-electricBlue selection:text-brand-dark transition-opacity duration-1000 ${isAppLoading ? 'opacity-0' : 'opacity-100'}`}>
         <Navbar />
         <main>{renderPage()}</main>
         <Footer />
